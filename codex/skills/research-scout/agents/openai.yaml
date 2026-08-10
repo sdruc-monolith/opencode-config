@@ -1,0 +1,15 @@
+interface:
+  display_name: "Research Scout"
+  short_description: "Find and curate recent research into Zotero"
+  default_prompt: "Use $research-scout to find recent papers matching my Zotero research interests."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "alphaxiv"
+      description: "Search and inspect alphaXiv research papers"
+      transport: "streamable_http"
+      url: "https://api.alphaxiv.org/mcp/v1"
+    - type: "mcp"
+      value: "zotero"
+      description: "Read and curate the local Zotero library"

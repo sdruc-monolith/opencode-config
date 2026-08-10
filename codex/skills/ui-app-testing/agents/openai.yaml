@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI App Testing"
+  short_description: "Run and validate web applications in browsers"
+  default_prompt: "Use $ui-app-testing to implement and browser-test this UI change."

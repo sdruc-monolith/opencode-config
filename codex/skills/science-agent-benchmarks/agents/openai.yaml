@@ -1,0 +1,4 @@
+interface:
+  display_name: "Science Agent Benchmarks"
+  short_description: "Compare scientific AI benchmark performance"
+  default_prompt: "Use $science-agent-benchmarks to assess current scientific AI benchmarks and model performance."

@@ -1,0 +1,55 @@
+sandbox_mode = "danger-full-access"
+approval_policy = "on-request"
+
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 4
+default_subagent_model = "gpt-5.6-luna"
+default_subagent_reasoning_effort = "xhigh"
+
+[projects."/Users/sdruc"]
+trust_level = "trusted"
+
+[tui]
+status_line = ["model-with-reasoning", "context-remaining", "used-tokens", "total-input-tokens", "total-output-tokens", "thread-title"]
+terminal_title = ["spinner", "thread", "project"]
+
+[tui.model_availability_nux]
+"gpt-5.6-sol" = 4
+
+[mcp_servers.playwright]
+command = "npx"
+args = ["-y", "@playwright/mcp"]
+
+[mcp_servers.duckduckgo]
+command = "uvx"
+args = ["duckduckgo-mcp-server"]
+
+[mcp_servers.alphaxiv]
+url = "https://api.alphaxiv.org/mcp/v1"
+
+[mcp_servers.zotero]
+command = "zotero-mcp"
+env_vars = ["ZOTERO_LOCAL", "ZOTERO_API_KEY", "ZOTERO_LIBRARY_ID", "ZOTERO_LIBRARY_TYPE"]
+startup_timeout_sec = 120
+
+[mcp_servers.playwright.tools.browser_navigate]
+approval_mode = "approve"
+
+[mcp_servers.playwright.tools.browser_tabs]
+approval_mode = "approve"
+
+[mcp_servers.playwright.tools.browser_close]
+approval_mode = "approve"
+
+[mcp_servers.playwright.tools.browser_evaluate]
+approval_mode = "approve"
+
+[mcp_servers.playwright.tools.browser_resize]
+approval_mode = "approve"
+
+[mcp_servers.playwright.tools.browser_press_key]
+approval_mode = "approve"
+
+[mcp_servers.playwright.tools.browser_click]
+approval_mode = "approve"
