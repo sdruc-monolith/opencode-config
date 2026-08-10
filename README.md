@@ -2,6 +2,9 @@
 
 Public, generic configuration shared by Codex and OpenCode.
 
+Clone this source repository as `~/repos/opencode-config`. Runtime files are
+installed separately under `~/.config/opencode` and `~/.codex`.
+
 - `opencode.base.jsonc` is the generic OpenCode source configuration.
 - `codex/` contains the generic Codex config, agents, and skills.
 - Work-specific MCPs, project trust settings, and skills live in a separate
