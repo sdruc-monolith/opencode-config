@@ -10,8 +10,7 @@ installed separately under `~/.config/opencode` and `~/.codex`.
 - Work-specific MCPs, project trust settings, and skills live in a separate
   private overlay.
 
-Run `install-codex.sh` from any directory to install a generic-only Codex
-configuration. On work machines, run the private repository's `install.sh`
-instead. It merges this repository with the private overlay into the standard
-OpenCode and Codex config paths, so the normal `opencode` and `codex` commands
-are the single entry point.
+Run `install.sh` from any directory to deep-merge this independent generic
+layer into the standard OpenCode and Codex configuration paths. Other
+repositories can apply their own layers afterward; later layers win on
+conflicting values while non-conflicting nested dictionary entries remain.
