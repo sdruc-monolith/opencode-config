@@ -1,5 +1,7 @@
 sandbox_mode = "danger-full-access"
 approval_policy = "on-request"
+model_context_window = 272000
+model_auto_compact_token_limit = 252000
 
 [projects."/Users/sdruc"]
 trust_level = "trusted"

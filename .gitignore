@@ -1,5 +1,9 @@
 node_modules
 package.json
 bun.lock
+inspiration
+plans
 .gitignore
 /opencode.jsonc
+__pycache__/
+*.py[cod]
