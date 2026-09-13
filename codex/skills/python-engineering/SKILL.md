@@ -1,6 +1,6 @@
 ---
 name: python-engineering
-description: Python engineering for .py files, pyproject.toml, application architecture, refactoring, code review, and data processing. Use when writing or changing Python code, especially when choosing between object-oriented design, built-ins, pandas, Polars, NumPy, PyArrow, or DuckDB.
+description: Python engineering for planning, implementation, refactoring, and review of .py files, pyproject.toml, and data pipelines. Use for package organization, reusable Python architecture, schema contracts, testing, or choosing between built-ins, pandas, Polars, NumPy, PyArrow, and DuckDB.
 ---
 
 # Python Engineering
@@ -9,6 +9,16 @@ Build maintainable Python systems with pragmatic object-oriented design and work
 
 Preserve public APIs, behavior, data contracts, naming vocabulary, and operational tooling. Follow existing patterns when deviation would create local inconsistency, incompatible abstractions, or disproportionate migration cost. Apply this skill to new or substantially changed boundaries where it provides a clear benefit. Refactor existing code only when needed for correctness, maintainability, performance, or testability, and keep the scope proportional to the requested change.
 
+## Workflow and References
+
+Use this skill for Python decisions within the current task. Use `plan` for substantial planning, `implement` to execute an agreed change, and `verify` for a completion audit; a small edit does not require a full workflow.
+
+Load the following references only when their branch applies:
+
+- [Data pipelines](references/data-pipelines.md): planning or changing ingestion, joins, schemas, storage, incremental processing, or rerun/recovery behavior.
+- [Testing](references/testing.md): designing Python tests, regression repros, characterization tests, or dataframe/file-output assertions.
+- [Performance](references/performance.md): investigating slowness or memory use, changing execution engines, or making performance claims.
+
 ## Extending Existing Code
 
 - Add characterization tests before restructuring unfamiliar or weakly tested behavior.
@@ -16,9 +26,44 @@ Preserve public APIs, behavior, data contracts, naming vocabulary, and operation
 - Introduce SOLID boundaries at natural seams such as persistence, HTTP, filesystems, queues, clocks, and external services.
 - Prefer adapters around legacy code over broad rewrites when compatibility must be preserved.
 - Improve touched code when the improvement is low-risk and supports the requested change; avoid unrelated cleanup.
+- An existing flat layout is not a reason to keep adding unrelated modules. Evolve the affected functionality into cohesive packages when responsibilities warrant it, preserving required public contracts and including relevant callers in the migration.
 - Introduce DuckDB, pandas, Polars, or another dependency only when its workload benefit exceeds dependency, conversion, and migration costs.
 - Preserve the project's package manager, formatter, linter, test runner, supported Python versions, and deployment constraints.
 - Explain intentional deviations from established patterns and identify any follow-up migration that remains.
+
+## Python Packages and Reuse
+
+Make logical package organization and shared implementations the default for growing Python systems. Apply the language-independent organization and reuse requirements from `plan`, `implement`, and `verify` using Python's package and import mechanisms.
+
+- For projects using a `src` layout, place importable code under `src/<package_name>/` and organize distinct domains/capabilities into subpackages. Respect an established alternative package layout while improving its internal organization.
+- Give modules and subpackages focused responsibilities and descriptive names. Keep CLI entry points and `__main__.py` thin, with reusable behavior in importable modules; a standalone script with one responsibility can remain a script.
+- Use `__init__.py` for regular packages, following intentional namespace-package conventions where present. Keep initialization lightweight and expose a deliberate public API through explicit imports/re-exports; avoid wildcard exports and eager imports of entire subpackage trees.
+- Search existing packages and established dependencies before adding a parser, validator, transformation, or storage operation. Consolidate shared behavior in the narrowest owning module and migrate the relevant callers instead of leaving competing implementations.
+- Use functions and first-class callables for stateless reusable behavior, cohesive objects for owned state/lifecycles, and small `Protocol` interfaces when a real variation boundary benefits from structural typing. Parameterize genuine variation while retaining distinct business policies.
+- Keep dependency direction explicit. Shared capabilities should not import the workflows that consume them; resolve circular imports through better ownership or dependency injection rather than routine import-time workarounds.
+- When moving modules, update internal imports, intentional public re-exports, `pyproject.toml` package discovery and entry points, package-data paths, and tests as applicable. Preserve old public import paths with narrow compatibility shims when required; shims delegate to the authoritative implementation.
+- Verify imports and entry points through the project's installed package workflow when packaging changes. Avoid `sys.path` manipulation or a special working directory that hides missing package inclusion.
+
+Illustrative layout for a pipeline application, with regular-package `__init__.py` files omitted for readability:
+
+```text
+src/project_name/
+    cli.py
+    customers/
+        models.py
+        enrichment.py
+    events/
+        ingestion.py
+        aggregation.py
+    storage/
+        parquet.py
+        checkpoints.py
+    validation/
+        schemas.py
+        keys.py
+```
+
+Choose names and boundaries from the actual domain. Create these packages only as their responsibilities exist; folder nesting alone does not establish modularity.
 
 ## Architecture
 
@@ -26,7 +71,9 @@ Prefer objects when behavior belongs to state, a lifecycle, or a domain concept:
 
 - Model domain entities and value objects with focused classes.
 - Use services for stateful workflows, external resources, or coordinated operations.
-- Use `@dataclass` for typed records with light behavior and Pydantic when runtime validation, serialization, or schema generation is required.
+- Use `@dataclass` for typed records and value objects with light behavior; use `TypedDict` for an existing mapping-shaped contract that needs static typing without changing its runtime representation.
+- Use Pydantic when runtime validation, serialization, or schema generation is required and fits the project's dependencies. Type hints and `TypedDict` alone do not validate external input.
+- Express columnar contracts with the engine's schema or Arrow types. Keep bulk data columnar rather than converting every row into an object model solely for typing or validation.
 - Define explicit interfaces with `Protocol` or abstract base classes when multiple implementations exist or a boundary needs isolation.
 - Inject collaborators rather than constructing databases, clients, and repositories deep inside business logic.
 - Keep resource ownership explicit with context managers and clear lifecycle methods.
@@ -34,6 +81,8 @@ Prefer objects when behavior belongs to state, a lifecycle, or a domain concept:
 - Keep classes cohesive and avoid god objects, static-method containers, speculative base classes, and Java-style ceremony.
 
 Small stateless transformations, predicates, adapters, and module-level entry points may remain functions. Do not wrap logic in a class solely to satisfy an object-oriented style preference.
+
+For pipelines, use objects to own resources, configuration, and stateful coordination where useful. Keep bulk transformations in SQL or dataframe expressions, or focused functions. Choose boundaries for meaningful ownership rather than a class for each pipeline stage.
 
 When procedural code mixes state, policy, I/O, and transformation in one function, separate those responsibilities into cohesive domain objects and collaborators. Keep orchestration readable and move behavior close to the data or resource it governs.
 
@@ -66,6 +115,10 @@ Prefer SQL, vectorized expressions, dataframe operations, and bulk APIs over row
 
 Do not load a large dataset into pandas merely because pandas is familiar. Consider DuckDB or Polars when data size, joins, aggregation, memory use, or repeated scans matter. Conversely, do not add a dataframe engine for a tiny one-pass collection operation that is clearer with built-ins.
 
+Treat the table as a starting point, not a mandate to migrate engines. Account for established dependencies, where the data already lives, execution capabilities, and conversion costs. Reuse an existing database's suitable query path rather than copying data into a local engine by default. Larger-than-memory execution depends on the operators, engine/version, and spill resources; verify it for the actual workload.
+
+Before implementing a pipeline, establish row grain, input/output schemas, keys, duplicate and null policies, join cardinality, ordering guarantees, and failure/rerun behavior. Preserve these contracts across engine changes; pandas, SQL, and other engines can differ on null-key joins, aggregation, ordering, and type coercion.
+
 ## Dependency Decisions
 
 Before adding a package:
@@ -96,10 +149,12 @@ Packages may be added without asking when the benefit is concrete and the change
 ## Verification
 
 - Test behavior through public interfaces rather than private implementation details.
-- Include unit tests for domain objects and integration tests for database, file-format, and dataframe boundaries.
+- Select unit tests for domain behavior and integration tests for database, file-format, and dataframe boundaries according to the changed contract and risk. Use existing checks for reversible, low-impact edits rather than adding implementation-mirroring tests.
 - Use realistic fixtures for nulls, duplicate keys, type coercion, empty inputs, and large-enough data to exercise the selected execution path.
 - Run the project's formatter, linter, type checker, and tests using its existing commands.
 - For performance changes, compare representative before-and-after timing and memory use when feasible.
+- When a persisted dataset is the output contract, read it back through the real format/engine and assert schema and values. Compare unordered results while preserving duplicate multiplicity unless order is part of the contract.
+- Base expected results on independently worked examples or explicit invariants. Validate correctness before interpreting benchmark results, and label unavailable runtime or performance evidence as unverified.
 
 ## Review Checklist
 
@@ -108,8 +163,11 @@ When reviewing Python code, check:
 - Whether domain behavior and state have clear object ownership.
 - Whether functions have become procedural collections of unrelated responsibilities.
 - Whether classes are cohesive rather than decorative wrappers.
+- Whether modules have logical package ownership, shared behavior has one implementation, and relevant callers use it without circular dependencies or catch-all utility collections.
+- Whether package discovery, public import paths, resource paths, and installed entry points remain correct after module moves.
 - Whether SOLID boundaries reduce coupling without creating speculative abstractions or excessive indirection.
 - Whether built-in loops duplicate operations better expressed by DuckDB, pandas, Polars, NumPy, PyArrow, or another established package already in the project.
 - Whether conversions and materialization create avoidable CPU or memory costs.
 - Whether a new dependency is justified and correctly declared.
 - Whether typing, tests, resource lifecycles, and failure behavior cover the changed boundary.
+- Whether pipeline grain, cardinality, schema evolution, and rerun/publication semantics are explicit and exercised where relevant.

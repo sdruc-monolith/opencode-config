@@ -1,0 +1,4 @@
+interface:
+  display_name: "Verify"
+  short_description: "Audit completed work against current evidence"
+  default_prompt: "Use $verify to audit this work against its requirements and report PASS, FAIL, or UNVERIFIED with evidence."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Implement"
+  short_description: "Build planned changes in small verified steps"
+  default_prompt: "Use $implement to execute this plan, reconcile it with the current code, and verify each completed outcome."

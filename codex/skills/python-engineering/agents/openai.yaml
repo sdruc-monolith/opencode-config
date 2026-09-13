@@ -1,4 +1,4 @@
 interface:
   display_name: "Python Engineering"
-  short_description: "Build and review maintainable Python systems"
-  default_prompt: "Use $python-engineering to implement this Python change with appropriate architecture and verification."
+  short_description: "Design Python systems and reliable data pipelines"
+  default_prompt: "Use $python-engineering for this Python task, with appropriate architecture, data contracts, testing, and performance evidence."

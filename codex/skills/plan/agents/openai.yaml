@@ -1,0 +1,4 @@
+interface:
+  display_name: "Plan"
+  short_description: "Plan engineering changes with verifiable steps"
+  default_prompt: "Use $plan to scope this change using repository evidence, explicit decisions, and verifiable implementation steps."
