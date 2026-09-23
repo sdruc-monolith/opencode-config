@@ -16,6 +16,7 @@ Build the requested behavior in coherent, verified slices. Treat the plan as a g
 - Recheck paths, interfaces, dependencies, and commands from older plans. Correct stale mechanical details; surface material changes to scope or public behavior.
 - Before adding functionality, inspect existing modules, callers, and dependencies for a suitable implementation to reuse or generalize. Identify the owning domain/capability and any duplicated rules the change should consolidate.
 - For a substantial change without an actionable plan, load `plan` to establish one. Retain the user's implementation authorization; planning is not an automatic approval gate. A small, clear task needs only a short checklist.
+- For multi-step work, use available task or progress-tracking tools to maintain a concise live checklist. When a plan exists, each item should link or explicitly refer to its owning task file or canonical checklist entry so its details remain easy to find. Keep the live checklist aligned as slices start, complete, or become blocked, and do not use it for trivial actions or as a substitute for durable project artifacts.
 - Load `python-engineering` for Python work and its relevant references for pipeline, testing, or performance decisions. Use `ui-app-testing` when the change affects a UI workflow.
 
 **Done when:** the next slice is unblocked, its outcome is understood, and the relevant verification command or approach is known.

@@ -17,6 +17,9 @@ removed settings and assets disappear exactly. Other repositories can apply
 their own layers afterward; later registered layers win on conflicting values
 while non-conflicting nested dictionary entries remain.
 
+Configuration files are generated, while commands, agents, and skills are
+copied into their runtime directories. The installer does not create symlinks.
+
 ## Engineering skills
 
 Use **plan → implement → verify** for substantial changes. Each skill is also

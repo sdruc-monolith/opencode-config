@@ -50,16 +50,22 @@ def asset_map(layers: List[Dict[str, Any]], category: str) -> Dict[str, Path]:
     return assets
 
 
-def replace_managed_link(target: Path, source: Path) -> None:
+def remove_path(path: Path) -> None:
+    if path.is_symlink() or path.is_file():
+        path.unlink()
+    elif path.is_dir():
+        shutil.rmtree(str(path))
+
+
+def replace_managed_asset(target: Path, source: Path) -> None:
     target.parent.mkdir(parents=True, exist_ok=True)
-    if target.is_symlink() or target.is_file():
-        target.unlink()
-    elif target.is_dir():
-        shutil.rmtree(str(target))
+    remove_path(target)
     temporary = target.with_name(target.name + ".new")
-    if temporary.is_symlink() or temporary.exists():
-        temporary.unlink()
-    temporary.symlink_to(source)
+    remove_path(temporary)
+    if source.is_dir():
+        shutil.copytree(source, temporary)
+    else:
+        shutil.copy2(source, temporary)
     os.replace(str(temporary), str(target))
 
 
@@ -75,11 +81,9 @@ def reconcile_assets(
         current = asset_map(layers, category)
         target_dir = homes[home_name] / relative_dir
         for removed_name in previous.keys() - current.keys():
-            removed = target_dir / removed_name
-            if removed.is_symlink():
-                removed.unlink()
+            remove_path(target_dir / removed_name)
         for name, source in current.items():
-            replace_managed_link(target_dir / name, source)
+            replace_managed_asset(target_dir / name, source)
 
 
 def main() -> None:
