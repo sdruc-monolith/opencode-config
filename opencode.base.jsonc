@@ -17,18 +17,23 @@
       "models": {
         "gpt-5.6-sol": {
           "limit": {
-            "context": 400000,
-            "input": 500000,
-            "output": 128000
+            "context": 500000,
+            "output": 32000
           }
         },
         "gpt-6-astra": {
           "limit": {
-            "context": 1050000,
-            "input": 500000,
-            "output": 128000
+            "context": 500000,
+            "output": 32000
+          }
+        },
+        "gpt-6.1-sol": {
+          "limit": {
+            "context": 500000,
+            "output": 32000
           }
         }
+
       }
     }
   },
