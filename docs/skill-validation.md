@@ -9,8 +9,8 @@ or from the repository root as shown. It checks:
   matching their directories.
 - Codex interface metadata and default prompts naming the corresponding skill.
 - Inline local Markdown file links, including references loaded conditionally.
-- Byte-for-byte parity for shared content, excluding runtime-specific `agents/`
-  metadata. Codex-only skills are permitted.
+- A single canonical `skills/` tree, including all references and Codex metadata.
+  Reintroducing files under the obsolete `codex/skills/` tree is rejected.
 
 This is a repository-convention check, not a complete YAML/schema validator or
 a behavioral evaluation. Anchor targets and external URLs are not validated.
@@ -22,10 +22,18 @@ all three variables before running `./install.sh`:
 - `OPENCODE_CONFIG_DIR=<temporary>/opencode`
 - `AGENT_CONFIG_STATE_HOME=<temporary>/state`
 
-Check that each installed skill resolves to the intended source directory,
-references and Codex metadata remain readable, and a repeated installation
-produces the same asset targets. Keep the state-home override: it prevents a
-smoke test from changing the real layer registry.
+Check that both runtime registries use the same canonical source and each
+installed skill is an ordinary directory whose files match that source,
+including references and Codex metadata. Reinstall after editing the source and
+confirm both outputs update. Also test migration from the old split-source
+registry, preserving later overlay precedence. Keep the state-home override:
+it prevents a smoke test from changing the real layer registry.
+
+Run the repository's metadata and installation regression tests with:
+
+```sh
+python3 -B -m unittest discover -s scripts -p 'test_skills.py' -v
+```
 
 Check discovery through each runtime's available skill-listing interface in an
 isolated configuration. In OpenCode, `opencode debug skill` lists available

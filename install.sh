@@ -19,7 +19,7 @@ python3 "$repo_dir/scripts/apply_layer.py" \
   --opencode-commands commands \
   --opencode-skills skills \
   --codex-agents codex/agents \
-  --codex-skills codex/skills \
+  --codex-skills skills \
   --codex-home "$codex_dir" \
   --opencode-home "$opencode_dir" \
   --state-home "$state_dir"

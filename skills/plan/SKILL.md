@@ -1,11 +1,22 @@
 ---
 name: plan
-description: Plan features, architecture changes, migrations, and complex refactors. Use when asked to plan or scope engineering work, or when a substantial change needs repository-grounded decisions and verifiable implementation steps.
+description: Plan substantial features, architecture changes, migrations, and complex refactors. Use for explicit planning/scoping requests or consequential design and dependency decisions. Routine small edits should proceed directly without creating a plan.
 ---
 
 # Plan
 
-Turn the request into a plan another session can execute. Save new plans as numbered directories with a compact overview and outcome-oriented task files. A small plan can contain only the overview; substantial work needs explicit decisions, dependencies, and observable acceptance criteria.
+Use the lightest planning that materially helps the task. When a durable plan is justified, make it executable by another session and save it as a numbered directory with a compact overview and outcome-oriented task files.
+
+## Decide Whether Planning Is Needed
+
+- For a small, clear implementation request, inspect the relevant code, make the change, and verify it directly. Routine documentation/configuration edits, narrow bug fixes with an understood cause, straightforward renames, and small test updates normally need no written plan. Do not create plan directories, task documents, or history files for them.
+- Requests to fix, add, improve, or investigate something are not automatically requests for a plan. Several tool calls, multiple touched files, or an ordinary inspect/edit/test sequence do not by themselves justify one. Investigate enough to understand the work before deciding that it needs formal planning.
+- If the user explicitly asks for a plan but not a saved artifact, default to a concise plan in the conversation. A short answer or temporary task checklist is sufficient when there are no consequential design choices or dependencies to preserve. Do not expand a simple request merely to fill the templates.
+- Create a saved plan only when the user requests one, applicable project instructions require one, or substantial authorized work has a concrete need for durable decisions and coordination, such as a complex migration, significant dependent milestones, or an expected cross-session handoff. Be able to state the specific benefit; otherwise proceed without creating an artifact.
+- When continuing work covered by an existing plan, use or update its relevant task. Do not mint a new numbered plan or lettered subplan for each fix, follow-up, or implementation detail. A separate plan needs a genuinely distinct scope that warrants the same durability test.
+- Keep planning-only requests within planning scope and respect edit permissions. Conversely, an implementation request does not need a planning approval ceremony for routine work; continue with the authorized change.
+
+**Decision rule:** if a short explanation or live checklist is enough to execute and verify the task, use that instead of creating a plan. The directory and template rules below apply only after a saved plan is justified.
 
 ## Plan Directory Contract
 
@@ -15,7 +26,7 @@ Turn the request into a plan another session can execute. Save new plans as numb
 - Use `01_<task-name>.md`, `02_<task-name>.md`, and so on for coherent implementation outcomes. Task IDs and filenames remain stable after work starts; explicit dependencies determine execution order, not numbering alone.
 - Create `design.md` only when several tasks need detailed shared contracts, architecture, or decisions. Keep a concise orientation in the overview and link exact required sections from tasks. Keep detailed execution evidence in report locations rather than growing the overview into a transcript.
 - Create `history.md` in the plan directory when the first consequential mistake, pitfall, or revision occurs, using [the history template](references/history-template.md). Give entries stable headings such as `## H001`, linking to `history.md#h001` rather than line numbers. Add descriptive, comma-separated history links beside each affected checklist item; one entry can serve several tasks.
-- For small work, keep the short steps and verification inline in `README.md`. Add task files only when there are meaningful separate outcomes. Continue existing single-file plans in place unless migration is requested; do not bulk-convert historical plans.
+- If a small saved plan is explicitly requested or required, keep the short steps and verification inline in `README.md`; this is a format fallback, not a reason to create plans for routine work. Add task files only when there are meaningful separate outcomes. Continue existing single-file plans in place unless migration is requested; do not bulk-convert historical plans.
 
 `README.md` owns task status and dependency edges. Task files own detailed implementation instructions and acceptance criteria; shared design documents own cross-task contracts. Maintain one progress checklist, not independent status lists in every file. Brief reminders of critical invariants may appear in tasks with a pointer to their authoritative definition.
 
@@ -71,7 +82,7 @@ Use [the overview template](references/plan-template.md) for `README.md` and [th
 
 ## 4. Deliver the Plan
 
-- When saving is requested or part of the authorized workflow and editing is permitted, create the plan directory and return its `README.md` path with a concise summary. Otherwise return the overview and task breakdown in the conversation, identifying files that would be created; do not claim an unsaved plan is on disk.
+- When a saved plan passes the planning-necessity check above and editing is permitted, create the plan directory and return its `README.md` path with a concise summary. For a conversational planning request, return only the detail the task needs; no directory proposal or full template is required. Do not claim an unsaved plan is on disk.
 - Check that every task is indexed, links resolve, dependency IDs exist, the dependency graph is acyclic, and each task's required context is explicit. For history links, verify unique entry IDs and matching heading anchors, not just file existence. Document source-path roots and command working directories, especially when the plan and code live in different worktrees.
 - Keep the checklist authoritative: use unchecked entries labeled pending, ready, in progress, or blocked; check an entry as completed only with verification evidence. Separate implemented-but-unverified work from completion. Record evidence first, then update the overview and next task; reopen affected entries when changes invalidate earlier evidence.
 - Specify the reading sequence: overview, selected task, its checklist-linked history entries, then required references and source. Read linked corrections as needed, without loading unrelated task details or the entire history by default. Whole-plan verification must still cover every required outcome and integrated acceptance.

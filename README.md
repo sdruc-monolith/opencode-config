@@ -6,7 +6,9 @@ Clone this source repository as `~/repos/opencode-config`. Runtime files are
 installed separately under `~/.config/opencode` and `~/.codex`.
 
 - `opencode.base.jsonc` is the generic OpenCode source configuration.
-- `codex/` contains the generic Codex config, agents, and skills.
+- `codex/` contains the generic Codex config and agents.
+- `skills/` is the single source for every skill in both runtimes, including
+  reference files and Codex interface metadata.
 - Work-specific MCPs, project trust settings, and skills live in a separate
   private overlay.
 
@@ -19,6 +21,8 @@ while non-conflicting nested dictionary entries remain.
 
 Configuration files are generated, while commands, agents, and skills are
 copied into their runtime directories. The installer does not create symlinks.
+Both runtimes receive their skills from the same `skills/` tree. Installed
+copies are deployment outputs; edit the source once and rerun `./install.sh`.
 
 ## Engineering skills
 
@@ -33,10 +37,14 @@ useful independently; small tasks use a proportionate checklist and checks.
 | [python-engineering](skills/python-engineering/SKILL.md) | Plan, build, or review Python systems and data pipelines | Python architecture, data contracts, testing, and performance guidance |
 | [ui-app-testing](skills/ui-app-testing/SKILL.md) | Change or diagnose UI behavior and layout | Local runtime, browser, and visual validation |
 
-All five are available in OpenCode and Codex after installation. In OpenCode,
+These engineering skills are available in OpenCode and Codex after installation. In OpenCode,
 ask, for example, “Use the plan skill to scope this pipeline change.” In Codex,
 use `$plan`, `$implement`, `$verify`, or `$python-engineering` in your prompt.
 The runtime's current agent mode and permissions still apply.
+
+The same shared tree also includes [research-scout](skills/research-scout/SKILL.md)
+and [science-agent-benchmarks](skills/science-agent-benchmarks/SKILL.md).
+Their OpenCode commands are thin entry points that load the canonical skills.
 
 Planning-only requests produce a plan. A request to plan and implement can
 continue into implementation when permissions allow it. Verification audits
@@ -102,16 +110,16 @@ Use the [overview template](skills/plan/references/plan-template.md),
 
 ### Maintaining and validating skills
 
-Keep shared skill bodies and references identical under `skills/` and
-`codex/skills/`. Codex-specific interface metadata lives in each skill's
-`agents/openai.yaml`.
+Maintain each skill only under `skills/<name>/`. Its `SKILL.md`, references, and
+Codex `agents/openai.yaml` metadata travel together to both runtimes. There is no
+second skill source tree under `codex/`.
 
 ```sh
 python3 scripts/check_skills.py
 ```
 
 This dependency-free check validates the repository's single-line metadata
-conventions, inline local file links, and cross-runtime content parity. Runtime
+conventions, inline local file links, and the single-source layout. Runtime
 loading and model behavior are separate checks; see the
 [skill validation scenarios](docs/skill-validation.md).
 
