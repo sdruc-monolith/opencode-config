@@ -32,6 +32,19 @@ Use the lightest planning that materially helps the task. When a durable plan is
 
 History records what went wrong or changed, why, the resolution or remaining uncertainty, and evidence. Correct current task/design instructions first, then record the history and attach its links to the checklist. Preserve entry IDs and keep corrections traceable; history explains current instructions rather than replacing them. Record useful lessons and material revisions, not every typo or routine failed command.
 
+## Write Clear, Technically Precise Plans
+
+Apply these rules to all plan Markdown, including overviews, tasks, shared designs, and history:
+
+- Write for a capable reader who is new to the project. Start with what will change and why, then give the technical details needed to implement and verify it.
+- Prefer everyday words, active voice, short sentences, and descriptive headings. Name the component, action, and expected result; avoid vague instructions such as "handle edge cases" or "make it robust."
+- Use technical terms when they carry necessary meaning. Explain unfamiliar terms and expand acronyms on first use; use the same term consistently afterward. Simplify the explanation, not the contract.
+- Preserve exact file paths, symbols, commands, API/configuration names, types, units, limits, and conditions. State required behavior, compatibility constraints, and failure cases explicitly. Keep requirements distinct from suggestions, and facts distinct from assumptions or open questions.
+- Break dense prose into focused bullets or numbered steps. Use a small concrete example when a rule is subtle, but retain the general rule and its exceptions; an example alone is not a specification.
+- Keep the overview easy to scan. Put necessary detail in the owning task or design section and link it precisely rather than removing it for brevity.
+
+For example, explain "idempotent publication" as "Publishing the same `run_id` again must not create a second output." Retain the technical term if useful, and specify any retry, conflict, or failure behavior the actual contract requires.
+
 ## Organization and Reuse Across Languages
 
 Organize source code into cohesive modules by domain or capability, with clear responsibilities and dependency direction. Actively reuse and generalize common behavior so each shared rule or operation has one authoritative implementation. Evolve the structure as responsibilities grow, using the language's idiomatic modules, packages, and visibility mechanisms.
@@ -83,6 +96,7 @@ Use [the overview template](references/plan-template.md) for `README.md` and [th
 ## 4. Deliver the Plan
 
 - When a saved plan passes the planning-necessity check above and editing is permitted, create the plan directory and return its `README.md` path with a concise summary. For a conversational planning request, return only the detail the task needs; no directory proposal or full template is required. Do not claim an unsaved plan is on disk.
+- Review the Markdown for clarity and technical fidelity: can an unfamiliar reader explain the outcome, follow each action, and recognize success? Replace unnecessary jargon and dense phrasing, then check that no requirement, condition, exception, or uncertainty was lost or changed.
 - Check that every task is indexed, links resolve, dependency IDs exist, the dependency graph is acyclic, and each task's required context is explicit. For history links, verify unique entry IDs and matching heading anchors, not just file existence. Document source-path roots and command working directories, especially when the plan and code live in different worktrees.
 - Keep the checklist authoritative: use unchecked entries labeled pending, ready, in progress, or blocked; check an entry as completed only with verification evidence. Separate implemented-but-unverified work from completion. Record evidence first, then update the overview and next task; reopen affected entries when changes invalidate earlier evidence.
 - Specify the reading sequence: overview, selected task, its checklist-linked history entries, then required references and source. Read linked corrections as needed, without loading unrelated task details or the entire history by default. Whole-plan verification must still cover every required outcome and integrated acceptance.

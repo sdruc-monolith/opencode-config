@@ -2,6 +2,8 @@
 
 Write one `NN_<task-name>.md` per coherent, independently verifiable outcome. Use a heading such as `T02: Implement the bounded selector`. The plan's `README.md` owns status and dependency edges; this file owns the instructions and acceptance for the task.
 
+Follow the skill's [plain-language guidance](../SKILL.md#write-clear-technically-precise-plans): use direct, concrete instructions and explain unfamiliar terms while keeping identifiers, contracts, conditions, and expected results precise.
+
 ## Outcome
 
 What observable capability exists when this task is complete, and which whole-plan acceptance criteria it supports. Include the implementation and its tests in the same task.

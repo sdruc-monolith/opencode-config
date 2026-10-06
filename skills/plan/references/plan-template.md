@@ -2,6 +2,8 @@
 
 Write this as `README.md` inside `<NNN><optional-letter>_<name>/`. Use the plan ID and descriptive title as the generated document's heading. Keep the overview compact; put substantial task details in files based on [the task template](task-template.md).
 
+Follow the skill's [plain-language guidance](../SKILL.md#write-clear-technically-precise-plans): explain the outcome and approach in simple language, define unfamiliar terms, and preserve exact constraints in the overview or clearly linked details.
+
 ## TL;DR
 
 The user-visible or caller-visible outcome, chosen approach, and why it matters, in a few sentences.
