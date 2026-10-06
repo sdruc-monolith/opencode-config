@@ -144,6 +144,8 @@ Packages may be added without asking when the benefit is concrete and the change
 - Handle errors at meaningful boundaries; do not broadly catch exceptions and silently continue.
 - Use logging rather than `print` for application diagnostics.
 - Keep APIs narrow and names domain-specific.
+- Do not use development-plan titles, IDs, task numbers, or planning-phase labels in package, module, class, function, variable, fixture, or test names. For example, use `ModelImporter`, `import_models`, and `test_import_rejects_duplicates`, not `Plan018Importer`, `plan_018_import_models`, or `test_plan_018_t02`.
+- Keep development-plan references in planning documents, progress tracking, and handoffs. Python comments, docstrings, and log/error messages should explain the behavior and rationale without referring to a plan name, number, or task.
 - Optimize after identifying the relevant workload, but avoid obviously inefficient algorithms and data movement from the outset.
 
 ## Verification
@@ -161,6 +163,7 @@ Packages may be added without asking when the benefit is concrete and the change
 When reviewing Python code, check:
 
 - Whether domain behavior and state have clear object ownership.
+- Whether changed names, comments, docstrings, and runtime messages describe domain behavior without development-plan references, including in tests and fixtures.
 - Whether functions have become procedural collections of unrelated responsibilities.
 - Whether classes are cohesive rather than decorative wrappers.
 - Whether modules have logical package ownership, shared behavior has one implementation, and relevant callers use it without circular dependencies or catch-all utility collections.

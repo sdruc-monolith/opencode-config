@@ -38,6 +38,8 @@ Build the requested behavior in coherent, verified slices. Treat the plan as a g
 Apply these organization and reuse requirements in every language:
 
 - Place behavior in cohesive modules/submodules by domain or capability. As responsibilities grow, introduce meaningful structure instead of extending a flat collection of unrelated source files; keep entry points thin and dependencies directional.
+- Name source files, modules, functions, classes, variables, and tests for their domain role or behavior. Do not embed development-plan titles, plan IDs, task numbers, or planning-phase labels in code names; names must remain meaningful without the plan.
+- Keep development-plan references in planning documents, progress tracking, and handoffs. Comments, docstrings, and runtime messages must explain behavior and rationale directly rather than refer to a plan name, number, or task.
 - Reuse or generalize an existing implementation before creating a parallel one. Extract repeated rules and operations into focused functions, composed objects, or small interfaces, using the language's idioms.
 - Give shared behavior a descriptive owner at the narrowest boundary common to its consumers. Keep caller-specific policy explicit through meaningful parameters, configuration, or collaborators; avoid a universal helper with unrelated mode flags.
 - Migrate the relevant existing callers to the shared implementation and remove superseded duplicate logic. An extraction is incomplete while those callers retain independent copies of the same behavior. Preserve genuinely different policies and unrelated user work.
@@ -58,6 +60,7 @@ Keep execution local to the current authorized workflow. Commit, push, create PR
 
 ## 4. Verify the Complete Change
 
+- Check changed code and tests for development-plan references in names, comments, docstrings, and runtime messages; replace them with descriptions of the actual behavior.
 - Load `verify` for the completed task, supplying the acceptance criteria, relevant diff scope, and checks already run.
 - For a whole-plan implementation, complete its integrated acceptance task/checks after component tasks. Checked component entries alone do not establish completion of the combined behavior.
 - Address concrete findings within the requested scope, then rerun checks affected by those changes. Reuse still-valid evidence instead of repeatedly running an unchanged suite.
