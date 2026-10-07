@@ -12,6 +12,7 @@ Build the requested behavior in coherent, verified slices. Treat the plan as a g
 - Read the request and relevant project instructions. For a plan directory, start with its `README.md`; if given a task file, read its owning overview as well. Use the canonical checklist and dependency edges to select the requested unblocked task or the next ready task within the authorized scope.
 - Load the selected task, the history entries linked beside its checklist item (including relevant corrections), its explicitly required references, and relevant current code/tests. Read other task details or historical reports only when needed. A README-only plan contains its work inline; continue a legacy single-file plan without converting it unless requested.
 - Inspect version-control state and account for existing user work before editing. Validate the task's concrete preconditions and settled contracts; report missing required context or unresolved consequential decisions instead of guessing.
+- Confirm the selected implementation worktree with `git rev-parse --show-toplevel` run from that worktree. Resolve source paths and command working directories against this root, even when the plan lives elsewhere. Do not switch to the main checkout, a sibling worktree, or the plan directory for code changes unless the user explicitly selects that target. Resolve conflicting worktree instructions before writing.
 - Map acceptance criteria to completed, pending, and blocked work. Verify prior completion claims against current code and evidence.
 - Recheck paths, interfaces, dependencies, and commands from older plans. Correct stale mechanical details; surface material changes to scope or public behavior.
 - Before adding functionality, inspect existing modules, callers, and dependencies for a suitable implementation to reuse or generalize. Identify the owning domain/capability and any duplicated rules the change should consolidate.
@@ -38,6 +39,8 @@ Build the requested behavior in coherent, verified slices. Treat the plan as a g
 Apply these organization and reuse requirements in every language:
 
 - Place behavior in cohesive modules/submodules by domain or capability. As responsibilities grow, introduce meaningful structure instead of extending a flat collection of unrelated source files; keep entry points thin and dependencies directional.
+- Keep implementation files, tests, fixtures, and reusable scripts inside the selected worktree's established source/test/tooling layout. Do not put deliverable code in `artifacts/`, plan/report directories, or external scratch locations, even when an artifacts directory is inside the worktree. Those locations hold plans, evidence, and generated outputs; their location does not define the source root.
+- Run implementation checks from the selected worktree using its code and environment. Do not make the change depend on source copied elsewhere, imports from another checkout, or symlinks/path overrides that hide misplaced code.
 - Name source files, modules, functions, classes, variables, and tests for their domain role or behavior. Do not embed development-plan titles, plan IDs, task numbers, or planning-phase labels in code names; names must remain meaningful without the plan.
 - Keep development-plan references in planning documents, progress tracking, and handoffs. Comments, docstrings, and runtime messages must explain behavior and rationale directly rather than refer to a plan name, number, or task.
 - Reuse or generalize an existing implementation before creating a parallel one. Extract repeated rules and operations into focused functions, composed objects, or small interfaces, using the language's idioms.
@@ -60,6 +63,7 @@ Keep execution local to the current authorized workflow. Commit, push, create PR
 
 ## 4. Verify the Complete Change
 
+- Confirm that every new or changed implementation file is in the selected worktree and visible in its diff or untracked-file list. Check ignore rules for any expected new file that is missing; code left in an ignored artifacts directory or another checkout does not count as delivered.
 - Check changed code and tests for development-plan references in names, comments, docstrings, and runtime messages; replace them with descriptions of the actual behavior.
 - Load `verify` for the completed task, supplying the acceptance criteria, relevant diff scope, and checks already run.
 - For a whole-plan implementation, complete its integrated acceptance task/checks after component tasks. Checked component entries alone do not establish completion of the combined behavior.

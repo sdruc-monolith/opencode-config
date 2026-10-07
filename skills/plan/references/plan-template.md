@@ -11,7 +11,7 @@ The user-visible or caller-visible outcome, chosen approach, and why it matters,
 ## Current State
 
 - What is implemented and verified, what remains, and the immediate blocker if any.
-- Source repository/worktree and baseline revision when known. Explicitly define the root for source paths and commands; document links are relative to this plan directory.
+- Source repository/worktree and baseline revision when known. Explicitly define the selected implementation worktree root for source paths and commands; document links are relative to this plan directory. An external plan or artifacts location is not a destination for implementation code.
 - Parent and related plans, linked by title. State exactly what this plan supersedes, if anything.
 
 This is a brief orientation, not a second progress list. The checklist below is authoritative for individual task status and dependencies.

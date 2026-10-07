@@ -36,6 +36,7 @@ Load the following references only when their branch applies:
 Make logical package organization and shared implementations the default for growing Python systems. Apply the language-independent organization and reuse requirements from `plan`, `implement`, and `verify` using Python's package and import mechanisms.
 
 - For projects using a `src` layout, place importable code under `src/<package_name>/` and organize distinct domains/capabilities into subpackages. Respect an established alternative package layout while improving its internal organization.
+- Keep Python packages, modules, tests, fixtures, and reusable scripts in the selected worktree's established layout. Never use `artifacts/`, plan/report directories, or external scratch paths as a home for deliverable Python code. Run checks against this worktree's package; do not use `PYTHONPATH`, `sys.path`, symlinks, or an editable install from another checkout to make misplaced code importable.
 - Give modules and subpackages focused responsibilities and descriptive names. Keep CLI entry points and `__main__.py` thin, with reusable behavior in importable modules; a standalone script with one responsibility can remain a script.
 - Use `__init__.py` for regular packages, following intentional namespace-package conventions where present. Keep initialization lightweight and expose a deliberate public API through explicit imports/re-exports; avoid wildcard exports and eager imports of entire subpackage trees.
 - Search existing packages and established dependencies before adding a parser, validator, transformation, or storage operation. Consolidate shared behavior in the narrowest owning module and migrate the relevant callers instead of leaving competing implementations.
@@ -168,6 +169,7 @@ When reviewing Python code, check:
 - Whether classes are cohesive rather than decorative wrappers.
 - Whether modules have logical package ownership, shared behavior has one implementation, and relevant callers use it without circular dependencies or catch-all utility collections.
 - Whether package discovery, public import paths, resource paths, and installed entry points remain correct after module moves.
+- Whether all intended Python files belong to the selected worktree, are visible to Git rather than hidden by ignore rules, and are the files actually imported during verification.
 - Whether SOLID boundaries reduce coupling without creating speculative abstractions or excessive indirection.
 - Whether built-in loops duplicate operations better expressed by DuckDB, pandas, Polars, NumPy, PyArrow, or another established package already in the project.
 - Whether conversions and materialization create avoidable CPU or memory costs.

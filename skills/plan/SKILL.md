@@ -61,6 +61,7 @@ Organize source code into cohesive modules by domain or capability, with clear r
 - Inspect applicable project instructions, relevant code and callers, existing tests, documentation, and version-control state. Identify canonical development and verification commands from project automation.
 - Map current module responsibilities and dependencies. Search for existing implementations and reusable dependencies before proposing new functionality; identify both copied code and repeated business rules.
 - Record current file paths and symbols as evidence. Clearly label proposed files and interfaces. Revalidate paths when resuming an older plan.
+- Identify the selected implementation worktree separately from the plan location. Target code, tests, fixtures, and reusable scripts to that worktree's established source/test/tooling layout, never to `artifacts/`, plan/report directories, or external scratch paths. A plan stored elsewhere must still resolve implementation paths and check commands against the selected worktree.
 - Distinguish observed behavior, desired behavior, assumptions, and unresolved decisions. Respect existing public contracts and supported environments.
 - For Python architecture, dependencies, or data processing, load `python-engineering` using the runtime's skill mechanism, or read its `SKILL.md` when skills are file-based. Read its data-pipeline reference when schemas, joins, storage, or incremental processing are involved.
 
