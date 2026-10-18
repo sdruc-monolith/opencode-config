@@ -48,6 +48,10 @@ loaded skills/references, edits, commands and results, and the final response.
 Use tool traces and observable results as evidence, not phrase matching against
 the skill text. Repeat a scenario when changing its relevant workflow branch.
 
+For planning scenarios below, answer the optional grilling offer with "No,
+continue normally" unless the scenario specifically exercises grilling. Confirm
+that declining keeps the existing planning behavior and does not load `grilling`.
+
 ### 1. Small Python Change
 
 **Setup:** A small CLI with an established test command and a help-text typo.
@@ -301,6 +305,84 @@ as entries are appended; no literal line-number links or renumbering is used.
 The verifier reports broken/duplicate anchors and stale current instructions
 without editing the plan. An unresolved contradiction blocks affected work
 rather than letting the agent silently choose a version.
+
+### 19. Planning With Grilling Declined
+
+**Setup:** A project with documented source paths and one unresolved consequential
+design choice. Use both a conversational planning request and a saved-plan request.
+
+**Prompt:** "Use plan to scope this feature." Answer the grilling offer with
+"No, continue normally."
+
+**Expected:** Offers a clear yes/no choice once and waits. After no, continues the
+normal evidence-gathering, focused clarification, and planning workflow without
+loading `grilling` or using its interview rounds. Does not create a saved plan
+solely because the offer occurred. Resuming the same effort does not repeat the
+offer. Repeat with an explicit "without grilling" in the initial prompt: skip
+the offer and proceed normally. A small implementation task needs no offer.
+
+### 20. Planning With Grilling Accepted
+
+**Setup:** A design with two independent choices and a third choice that depends
+on one of them. Include a repository fact the agent can inspect itself.
+
+**Prompt:** "Use plan to scope this design." Answer "Yes, use grilling."
+
+**Expected:** Loads `grilling`, carries forward known context, and asks the ready
+questions together with recommended answers. Investigates the discoverable fact
+itself. Waits for the user's answers before asking dependent questions; does not
+silently accept unanswered questions or spawn unauthorized subagents. Summarizes
+the decisions and obtains confirmation, then resumes `plan` without another
+offer or a recursive skill-loading loop. A planning-only request stays within
+planning scope. Repeat with "Plan and implement": preserve that authorization
+while still completing the opted-in interview before implementation.
+
+Compare saved-plan variants with and without grilling: both use the same normal
+overview, task files, canonical dependency/workstream index, and optional shared
+design. Confirmed decisions and rationale appear in their owning sections, with
+single-session task sizing preserved. No separate interview report, transcript,
+decision log, directory, or checklist is created. A conversational plan remains
+conversational; revising an existing plan preserves its IDs and uses history only
+for consequential changes. Question numbers do not become task IDs.
+
+### 21. Direct Grilling, Early Exit, and Unavailable Interaction
+
+**Prompt:** "Use grilling to stress-test this idea."
+
+**Expected:** Starts the interview without a redundant opt-in prompt, uses
+dependency-aware rounds, and finishes with a summary for confirmation. Repeat
+through `plan` with an explicit grilling request: load `grilling` without asking
+again. During a round, say "Stop grilling and continue normal planning": stop,
+carry forward settled decisions, and mark unanswered consequential choices as
+unresolved rather than inventing answers. Do not immediately offer grilling again.
+
+In a noninteractive planning run with no supplied preference, skip optional
+grilling, state that it was skipped, and follow ordinary planning's handling of
+assumptions and blockers. Do not treat the absence of an answer as consent.
+
+### 22. Dependency Workstreams and Single-Session Task Sizing
+
+**Setup:** A substantial change with a shared interface prerequisite, two
+independent consumers, and a final integrated check. One proposed consumer task
+requires enough unrelated code and work to exceed a roughly 200k-token session.
+Also include two proposed tasks that would edit the same shared interface.
+
+**Prompt:** "Use plan to break this change into dependency-aware, session-sized
+tasks." Decline optional grilling to isolate task decomposition.
+
+**Expected:** Records real prerequisite outputs and groups independent consumers
+into parallel workstreams. Gives each stream clear ownership and an integration
+point, resolving shared-interface edits before claiming parallel readiness.
+Splits the oversized task into bounded, independently verifiable outcomes, each
+with enough budget for context, implementation, debugging, checks, and handoff.
+Uses a smaller budget when the runtime requires it and does not invent exact
+token estimates. Does not create artificial dependency chains, defer all tests
+to a later task, or rely on context compaction to justify an oversized task.
+
+When implementing, honors those prerequisites, keeps independent work unblocked,
+and does not spawn agents without authorization. If new evidence makes a task
+too large, records a verified boundary where possible, splits the remaining
+outcomes, updates dependencies, and leaves incomplete work unchecked.
 
 ## Recording Results
 

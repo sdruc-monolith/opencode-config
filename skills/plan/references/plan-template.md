@@ -35,11 +35,16 @@ Index shared design sections and supporting reports here with a short descriptio
 
 Use one entry per task. Replace each title with a relative Markdown link to its task file; for a README-only plan, link to the inline work section. T01 corresponds to `01_<task-name>.md`. These are illustrative incomplete entries to replace with the actual task graph:
 
-- [ ] **T01: First independently verifiable outcome** — ready; depends on none.
-- [ ] **T02: Next outcome** — pending; depends on T01.
-- [ ] **T03: Integrated verification** — pending; depends on T01 and T02.
+- [ ] **T01: Shared contract and fixtures** — ready; workstream: foundation; depends on none.
+- [ ] **T02: Transformation** — pending; workstream: transformation; depends on T01 for the input/output contract and fixtures.
+- [ ] **T03: Output writer** — pending; workstream: storage; depends on T01 for the output contract and fixtures.
+- [ ] **T04: Integrated verification** — pending; workstream: integration; depends on T02 and T03 for the verified transformation and writer.
 
 Keep task IDs stable. Order entries for readability, but express all actual blockers explicitly; an independent task need not wait just because it appears later. A pending task becomes ready when prerequisites and consequential decisions are settled. Use blocked with a reason for unresolved decisions or environment constraints, and in progress for active work.
+
+In this example, T02 and T03 are parallel-ready after T01; neither depends on the other. Group independent tasks into named workstreams and describe each stream's owned files/modules, inputs, outputs, and integration point. Resolve shared-edit conflicts or unsettled interfaces before treating streams as independent. Keep all task status and dependency edges in this single checklist. If the work is inherently sequential, explain the real prerequisites rather than inventing parallelism.
+
+Every task must fit one agent session, comfortably below an all-in budget of roughly 200k tokens or the runtime's smaller available limit. Include context loading, implementation, debugging, verification, and handoff in that budget. Split oversized tasks into verifiable outcomes before marking them ready; a workstream can contain several such tasks.
 
 Only checked entries are completed. Attach concise verification evidence or a report link when checking an entry. Code implemented with required verification outstanding stays unchecked with the gap stated. Task documents may contain acceptance criteria and results, but do not maintain a competing progress checklist or status field.
 

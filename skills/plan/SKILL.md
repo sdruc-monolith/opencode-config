@@ -18,6 +18,16 @@ Use the lightest planning that materially helps the task. When a durable plan is
 
 **Decision rule:** if a short explanation or live checklist is enough to execute and verify the task, use that instead of creating a plan. The directory and template rules below apply only after a saved plan is justified.
 
+## Offer Optional Grilling
+
+- At the start of an actual planning effort, including a conversational plan, ask once: "Would you like to use the grilling skill to stress-test this plan through rounds of questions and recommended answers, or continue with normal planning?" Use the runtime's question tool when available, with explicit "Yes, use grilling" and "No, continue normally" choices, and wait for the answer. Otherwise ask in the conversation.
+- Honor an explicit preference already given for this planning effort. A direct request for grilling counts as yes. Do not repeat the offer on a resumed plan or after the user has answered, and do not add this prompt to small implementation tasks that bypass planning above.
+- **Yes:** load `grilling` using the runtime's skill mechanism, or read [its instructions](../grilling/SKILL.md) when skills are file-based. Run the interview with the current request and known context. After the user confirms the shared understanding, carry the decisions into the normal planning workflow below. Grilling does not by itself require a saved plan or authorize implementation.
+- Use exactly the same plan structure with or without grilling. Keep interview notes in the conversation and incorporate confirmed decisions into the normal overview, owning tasks, and optional shared design. Preserve the same dependency/workstream index and session-sized task rules; do not create separate grilling artifacts or turn question numbers into task IDs.
+- **No:** continue the existing workflow below without loading `grilling` or running its interview rounds. Still ask the focused consequential questions needed for ordinary planning.
+- If the user stops grilling, resume ordinary planning with the settled decisions and explicitly unresolved questions. Do not offer grilling again unless they request it.
+- If interaction is unavailable and no preference was supplied, continue normal planning and state that optional grilling was skipped. Never infer consent to grilling from silence.
+
 ## Plan Directory Contract
 
 - Use the project's established plan location, defaulting to `artifacts/plans/` when none exists. Name each new plan directory `<NNN><optional-letter>_<name>/`, such as `018_model-import/` or `013b_state-driven-selection/`: three decimal digits, an optional lowercase subplan letter, and a descriptive lowercase hyphenated name.
@@ -80,11 +90,14 @@ Organize source code into cohesive modules by domain or capability, with clear r
 ## 3. Slice the Work
 
 - Write observable acceptance criteria, then break the change into coherent, independently verifiable outcomes. Keep implementation, its tests, and necessary documentation together; a task can touch multiple modules. Split by meaningful work boundaries, not by document headings, individual functions, or one file per edit.
+- Build an explicit dependency graph. A task depends on another only when it needs that task's decision, interface, verified output, or resolution of a shared-edit conflict. State what each prerequisite supplies; numbering and preferred presentation order are not dependencies.
+- Group independent tasks into parallel workstreams instead of making one artificial serial chain. Identify each stream's owned modules/files, inputs, outputs, and integration point. Settle shared contracts in prerequisite tasks; resolve overlapping edits through clear ownership or explicit sequencing before declaring streams parallel-ready. Workstream planning does not itself authorize delegation or concurrent edits.
 - For substantial changes, include the proposed module/package layout, responsibility of each affected boundary, public interfaces, and dependency direction. Name implementations to reuse or consolidate and the callers to migrate; explain when superficially similar behavior should remain separate.
 - Prefer a narrow end-to-end path that can be exercised independently. For a pipeline, start with representative input flowing through the actual transformation to its output boundary.
 - Scope prerequisite refactoring to the change, including behavior-preserving extractions and module moves needed for coherent organization and reuse. For wide migrations, use expand, migrate, contract when that lets intermediate states remain compatible; otherwise identify the required atomic integration boundary.
 - For large efforts, separate investigation tasks from implementation tasks. Give investigations a question, bounded method, and decision/evidence output. Mark implementation that depends on unresolved design as blocked, rather than leaving a less capable implementer to invent the answer.
-- Size each task so a fresh agent can implement and verify it using the overview, the task file, explicitly named references, and current source. Split tasks that combine independent outcomes or substantially different context; keep tightly coupled edits together when separation would create unusable intermediate states or excessive handoffs.
+- Always size each task, including investigation and integration tasks, to fit comfortably within one agent session. Use roughly 200k tokens as the upper planning budget, or the runtime's smaller available context limit. Budget for instructions, conversation, overview/task/references, source inspection, tool output, implementation, debugging, verification, and handoff together. Leave headroom for unexpected findings; 200k is not a target to fill or a precise estimate to claim.
+- Split oversized tasks before marking them ready. Give each smaller task a concrete outcome, bounded required context, independent verification, and an explicit handoff to its consumers. Keep tightly coupled edits together where feasible; if they exceed the session budget, introduce a compatible intermediate boundary or a prerequisite investigation/refactor rather than relying on context compaction or multiple sessions to finish one task.
 - Settle consequential design choices before a task becomes ready. Define domain terms, important interfaces, invariants, error behavior, existing abstractions to reuse, and callers to migrate. Give a short worked example when semantics are subtle, and explain what to report if a prerequisite is false.
 - Choose test boundaries from observable contracts and existing tests. Use unit, integration, file-output, or runtime checks where they provide useful evidence. Testing effort should match behavior and risk.
 - Discover exact check commands where possible; otherwise state what must be discovered and why. Do not assume a package manager, checker, or coverage target.
@@ -92,7 +105,7 @@ Organize source code into cohesive modules by domain or capability, with clear r
 
 Use [the overview template](references/plan-template.md) for `README.md` and [the task template](references/task-template.md) for each implementation or investigation file. Omit irrelevant sections, but retain the context and verification needed for an unfamiliar implementer.
 
-**Done when:** ready tasks are executable without reconstructing the conversation or inventing consequential decisions, dependencies and module ownership are explicit, and every acceptance criterion has a verification approach. If all work is blocked, name the decision or investigation needed to unblock it.
+**Done when:** each ready task fits one session and is executable without reconstructing the conversation or inventing consequential decisions, real dependencies and parallel workstreams are explicit, module ownership is clear, and every acceptance criterion has a verification approach. If all work is blocked, name the decision or investigation needed to unblock it.
 
 ## 4. Deliver the Plan
 

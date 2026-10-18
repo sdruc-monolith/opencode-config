@@ -32,6 +32,7 @@ useful independently; small tasks use a proportionate checklist and checks.
 | Skill | When to use it | Result |
 | --- | --- | --- |
 | [plan](skills/plan/SKILL.md) | Scope a feature, migration, or complex refactor | Repository-grounded decisions, acceptance criteria, and verifiable slices |
+| [grilling](skills/grilling/SKILL.md) | Opt into a thorough interview about a plan, decision, or idea | Dependency-aware question rounds, recommended answers, and confirmed decisions |
 | [implement](skills/implement/SKILL.md) | Build an agreed change or resume a plan | Incremental implementation, progress, and verification evidence |
 | [verify](skills/verify/SKILL.md) | Audit completed work | Findings and PASS / FAIL / UNVERIFIED results against requirements |
 | [python-engineering](skills/python-engineering/SKILL.md) | Plan, build, or review Python systems and data pipelines | Python architecture, data contracts, testing, and performance guidance |
@@ -41,6 +42,15 @@ These engineering skills are available in OpenCode and Codex after installation.
 ask, for example, “Use the plan skill to scope this pipeline change.” In Codex,
 use `$plan`, `$implement`, `$verify`, or `$python-engineering` in your prompt.
 The runtime's current agent mode and permissions still apply.
+
+At the start of planning, `plan` asks whether you want optional grilling. Choose
+yes to load `grilling` and work through questions before continuing the plan;
+choose no to keep the normal planning workflow. An explicit choice is reused
+for that planning effort. You can also request `grilling` directly, or use
+`$grilling` in Codex. Small implementation tasks that bypass planning do not
+receive this prompt. Grilling feeds decisions into the same plan overview,
+session-sized tasks, workstreams, and optional shared design. Interview notes
+stay in the conversation; no separate grilling artifacts are generated.
 
 The same shared tree also includes [research-scout](skills/research-scout/SKILL.md)
 and [science-agent-benchmarks](skills/science-agent-benchmarks/SKILL.md).
@@ -102,6 +112,11 @@ plan location, defaulting to `artifacts/plans/`. For example:
   references, including that task's checklist-linked history entries. The
   overview owns progress; completion requires evidence, and
   whole-plan verification includes the integrated result.
+- Order tasks by real prerequisites and group independent tasks into parallel
+  workstreams with clear ownership and integration points. Each task must fit
+  one agent session, comfortably within an all-in budget of roughly 200k tokens
+  or the runtime's smaller available limit, including context, implementation,
+  debugging, verification, and handoff. Split oversized tasks before execution.
 
 Use the [overview template](skills/plan/references/plan-template.md),
 [task template](skills/plan/references/task-template.md),

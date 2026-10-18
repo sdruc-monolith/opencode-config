@@ -16,6 +16,12 @@ What observable capability exists when this task is complete, and which whole-pl
 - Name repository-relative source files, symbols, relevant callers, and existing tests to inspect. Distinguish existing locations from proposed additions or moves; use the source root declared in the overview.
 - Define unfamiliar domain terms. Required facts and decisions must be available in this working set, not hidden in historical logs or prior conversation.
 
+## Session Scope and Workstream
+
+- Bound this task to one agent session, comfortably within roughly 200k tokens or the runtime's smaller available limit, including required context, source/tool output, implementation, debugging, verification, and handoff. Explain the scope and context choices that make it fit; do not invent precise token estimates.
+- If it does not fit, split it into smaller verifiable outcomes before declaring it ready. Do not defer its necessary tests merely to fit the budget or assume compaction will make an oversized task manageable.
+- Identify the workstream and owned files/modules, the concrete outputs consumed by other tasks, and any shared-edit or interface constraints. Use the overview's canonical dependencies and workstream map; do not add a competing status list here.
+
 ## Preconditions
 
 Describe the concrete results expected from prerequisite tasks, required environment/tooling, and settled decisions. The overview remains authoritative for dependency IDs and status. If a prerequisite is missing or conflicts with current code, report the exact mismatch and affected work rather than inventing a replacement contract.
