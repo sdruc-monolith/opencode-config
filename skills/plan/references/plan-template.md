@@ -13,6 +13,7 @@ The user-visible or caller-visible outcome, chosen approach, and why it matters,
 - What is implemented and verified, what remains, and the immediate blocker if any.
 - Source repository/worktree and baseline revision when known. Explicitly define the selected implementation worktree root for source paths and commands; document links are relative to this plan directory. An external plan or artifacts location is not a destination for implementation code.
 - Parent and related plans, linked by title. State exactly what this plan supersedes, if anything.
+- For a parent coordinating subplans, link each child and summarize its scope, dependencies, and handoff. Link back to the parent from each child; keep child task status in the child's own checklist.
 
 This is a brief orientation, not a second progress list. The checklist below is authoritative for individual task status and dependencies.
 
@@ -33,7 +34,9 @@ Index shared design sections and supporting reports here with a short descriptio
 
 ## Checklist and Task Index
 
-Use one entry per task. Replace each title with a relative Markdown link to its task file; for a README-only plan, link to the inline work section. T01 corresponds to `01_<task-name>.md`. These are illustrative incomplete entries to replace with the actual task graph:
+Use one entry per task, with at most nine tasks total, including investigation, integration, and completed tasks. Split larger efforts or substantial replanning into linked lettered subplans such as `019a` or `020b`; do not hide overflow in nested tasks or duplicate child checklists here. Follow the skill's [bounded-plan rules](../SKILL.md#keep-plans-bounded-and-prefer-subplans).
+
+Replace each title with a relative Markdown link to its task file; for a README-only plan, link to the inline work section. T01 corresponds to `01_<task-name>.md`. These are illustrative incomplete entries to replace with the actual task graph:
 
 - [ ] **T01: Shared contract and fixtures** — ready; workstream: foundation; depends on none.
 - [ ] **T02: Transformation** — pending; workstream: transformation; depends on T01 for the input/output contract and fixtures.

@@ -342,8 +342,10 @@ overview, task files, canonical dependency/workstream index, and optional shared
 design. Confirmed decisions and rationale appear in their owning sections, with
 single-session task sizing preserved. No separate interview report, transcript,
 decision log, directory, or checklist is created. A conversational plan remains
-conversational; revising an existing plan preserves its IDs and uses history only
-for consequential changes. Question numbers do not become task IDs.
+conversational; small revisions preserve the existing plan's IDs and use history
+only for consequential changes. Substantial scope growth or material replanning
+prefers a linked lettered subplan, with at most nine tasks in each plan. Question
+numbers do not become task IDs.
 
 ### 21. Direct Grilling, Early Exit, and Unavailable Interaction
 
@@ -383,6 +385,123 @@ When implementing, honors those prerequisites, keeps independent work unblocked,
 and does not spawn agents without authorization. If new evidence makes a task
 too large, records a verified boundary where possible, splits the remaining
 outcomes, updates dependencies, and leaves incomplete work unchecked.
+
+### 23. Bounded Plans and Lettered Subplans
+
+**Setup:** A requested effort with 12 independently verifiable, session-sized
+outcomes, including investigation and integrated acceptance. For continuation,
+use an existing nine-task plan `019` with completed evidence, plus a `020` plan
+that already has subplan `020a`. Include a variant whose remaining approach has
+already undergone material revisions but whose task count is below nine.
+
+**Prompt:** "Save a plan for this effort without grilling." Then in the
+continuation variants: "Add this substantial follow-up to plan 019" and
+"Replan the remaining work in plan 020 around this changed approach."
+
+**Expected:** Splits the larger effort into coherent linked subplans with at most
+nine tasks each, counting investigation, integration, and completed work. Does
+not hide overflow in nested tasks or enlarge tasks beyond one session. A parent
+indexes child scope and dependencies without duplicating child task status.
+Creates `019a` for the substantial follow-up and `020b` for material replanning,
+after checking occupied IDs. Links parent and child both ways, names exact
+cross-plan prerequisites and acceptance, preserves IDs/evidence/history, and
+identifies transferred or superseded work and its new owner. Does not keep
+rewriting the original task graph just because it remains below the cap.
+
+Repeat with `implement` discovering overflow during task splitting, and with
+`grilling` uncovering substantial scope growth: both follow the same subplan
+rules. Repeat with a small clarification or routine bug fix: updates the owning
+task or performs the fix directly without creating a separate plan. A historical
+plan already above nine tasks is not retroactively restructured; substantial new
+work goes into a bounded subplan.
+
+### 24. Reuse Files and Organize by Purpose
+
+**Setup:** A fixture repository with established source, reports, and build
+locations, a current report with a suitable section, and generated screenshots
+from several task-owned attempts. Include a proposed empty directory scaffold
+and an unrelated user-authored file.
+
+**Prompt:** "Use artifact-management while updating this result and saving useful
+evidence."
+
+**Expected:** Inspects existing paths, updates the authoritative report, and saves
+only useful new evidence in the owning workflow's location. Avoids duplicate
+summaries, per-command folders, empty scaffolding, and `final-v2` copies. Does not
+create a management inventory to explain its own housekeeping. Retains coherent
+source/module boundaries rather than merging unrelated content to lower file
+count. Cleans up confirmed task-owned redundant captures after verification,
+preserving the user-authored file and referenced evidence. A small edit does not
+trigger a machine-wide disk scan.
+
+### 25. Peak Storage, Unknown Growth, and Bounded Retention
+
+**Setup:** An export/download-and-extract workflow with separate destination and
+scratch filesystems. Final output alone fits, but expanded inputs, staging,
+parallel workers, and retries exceed available scratch capacity. Include an
+unknown-size variant and a dataset with many small partitions.
+
+**Prompt:** "Use artifact-management to generate these outputs without filling
+the disk."
+
+**Expected:** Inspects capacity on the actual filesystems and estimates peak
+additional bytes and file count, distinguishing estimates from measurements.
+Uses a bounded pilot for unknown growth and adjusts sampling, batching,
+concurrency, or destination within the output contract. Pauses a write that
+cannot fit and continues independent work; does not silently fill `/tmp` or
+delete other data. Reuses valid cached inputs, bounds retries and log/capture
+growth, and retains only needed task-owned results and unresolved-failure
+evidence. Published or cited evidence remains stable. Moving or compressing
+files is not reported as deletion or measured reclaimed space.
+
+### 26. Cleanup Ownership and Audit Boundaries
+
+**Setup:** An output tree containing current task-owned disposable intermediates,
+a published result referenced by a plan, an old checkpoint, a shared cache, a
+user-edited ignored file, and a symlink to unrelated storage. Define an explicit
+retention policy for one pre-existing disposable output. Keep the fixture small;
+do not create large files merely to test cleanup decisions.
+
+**Prompt:** "Use artifact-management to clean up this task's outputs." Repeat as
+an audit-only request through `verify`.
+
+**Expected:** Inspects exact targets and real locations. In cleanup mode, removes
+only confirmed task-owned disposable files and pre-existing outputs covered by
+the applicable policy, after preserving required evidence. Leaves protected or
+uncertain files intact and asks only about specific unresolved removals. Does
+not infer deletion permission from names, age, size, or ignore rules, follow the
+symlink into unrelated storage, or use global clean/prune commands. An authorized
+durable-file move updates and verifies consumers/links before removing the old
+copy. Audit mode reports findings without reorganizing or deleting existing
+files; only its own temporary resources follow normal teardown. Reports actual
+output paths and measured cleanup results in the completion response without
+creating an extra cleanup report.
+
+### 27. Amendments and an Unambiguous Latest Version
+
+**Setup:** A mutable report with an established path, a hosted artifact that
+supports updates at the same ID/URL, and a versioned deliverable whose older
+revision is cited as immutable evidence. An existing owning README links the
+current version. Include a newer incomplete draft and misleading modification
+times that make the old revision appear newest.
+
+**Prompt:** "Amend this artifact with the requested changes and make it clear
+which version is latest." Repeat through `verify` as an audit of the amendment.
+
+**Expected:** Updates mutable deliverables at the same path or artifact ID/URL.
+When separate versions are required, updates the existing owner's explicit
+latest-version link, revision, and supersession relationship. Labels a newer
+incomplete revision as latest draft while keeping the current verified or
+published version separately identified, without inventing approval. Does not
+infer the current revision from timestamps, directory order, or `final-v2`
+suffixes. Updates current-use links after the replacement is ready, preserves
+intentional historical citations and immutable contents, and verifies that the
+entry point opens the intended revision. The completion response links directly
+to the amended artifact, gives its status and a brief change summary, and names
+the superseded artifact when a separate replacement was needed. No extra
+`LATEST` file, copied deliverable, or version index is created when the existing
+owner suffices. Audit mode reports stale or competing current links and incorrect
+readiness labels without changing the artifacts.
 
 ## Recording Results
 

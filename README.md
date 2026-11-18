@@ -35,6 +35,7 @@ useful independently; small tasks use a proportionate checklist and checks.
 | [grilling](skills/grilling/SKILL.md) | Opt into a thorough interview about a plan, decision, or idea | Dependency-aware question rounds, recommended answers, and confirmed decisions |
 | [implement](skills/implement/SKILL.md) | Build an agreed change or resume a plan | Incremental implementation, progress, and verification evidence |
 | [verify](skills/verify/SKILL.md) | Audit completed work | Findings and PASS / FAIL / UNVERIFIED results against requirements |
+| [artifact-management](skills/artifact-management/SKILL.md) | Create or organize saved outputs, manage disk growth, or clean up task files | Logical file placement, output reuse, bounded storage and retention, and scoped cleanup |
 | [python-engineering](skills/python-engineering/SKILL.md) | Plan, build, or review Python systems and data pipelines | Python architecture, data contracts, testing, and performance guidance |
 | [ui-app-testing](skills/ui-app-testing/SKILL.md) | Change or diagnose UI behavior and layout | Local runtime, browser, and visual validation |
 
@@ -97,6 +98,12 @@ plan location, defaulting to `artifacts/plans/`. For example:
 
 - `README.md` contains the TL;DR, global constraints, current state, canonical
   checklist/index, dependencies, next task, and whole-plan acceptance.
+- Keep each plan below 10 tasks (at most nine, including investigation,
+  integration, and completed tasks). Prefer linked lettered subplans such as
+  `019a` or `020b` for larger efforts, substantial follow-ups, or material
+  replanning rather than repeatedly rewriting an existing plan. Link parent and
+  child both ways, preserve IDs and evidence, and keep task status with its
+  owning plan. Small corrections stay in place; historical plans need no rewrite.
 - Each task file describes one coherent, independently verifiable outcome:
   required context, settled design/contracts, implementation steps, verification,
   evidence, and blockers. Keep implementation and its tests together.
@@ -122,6 +129,30 @@ Use the [overview template](skills/plan/references/plan-template.md),
 [task template](skills/plan/references/task-template.md),
 [linked history template](skills/plan/references/history-template.md), and
 [implementation handoff](skills/implement/references/handoff-template.md).
+
+### Artifact and file management
+
+Use [artifact-management](skills/artifact-management/SKILL.md) when saving outputs
+or managing file and disk growth. For example: “Use artifact-management to review
+these generated outputs and clean up confirmed disposable files,” or
+`$artifact-management` in Codex.
+
+The skill prefers existing authoritative files and meaningful directory
+boundaries over new summaries, timestamped copies, and archive folders. It checks
+peak disk requirements before storage-heavy operations, bounds runs and captures,
+preserves cited evidence, and cleans up task-owned intermediates. Existing data
+and unfamiliar files need an established ownership and retention policy before
+removal. Small edits need no storage audit or extra management documents.
+
+Iterations and amendments update the same canonical file or hosted artifact when
+possible. When versions must coexist, the existing owner explicitly links the
+latest revision and identifies superseded versions. A newer draft is clearly
+distinguished from the current verified or published result, and each amendment
+response links directly to the updated artifact.
+
+The plan, implement, verify, UI-testing, and data-pipeline workflows reference
+this guidance when their work produces or reviews artifacts. Audits report
+cleanup findings; implementation performs authorized cleanup.
 
 ### Maintaining and validating skills
 

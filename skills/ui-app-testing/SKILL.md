@@ -91,7 +91,7 @@ When a visual defect is found, fix it and repeat the relevant screenshots and in
 - Run the repository's relevant formatter, linter, type checker, unit or integration tests, build, and existing end-to-end tests.
 - Keep the local environment running while diagnosing failures so logs, network traffic, and browser state remain available.
 - Remove only resources created for the task. Do not tear down pre-existing containers, namespaces, clusters, volumes, or user processes.
-- Preserve useful screenshots or traces only when the repository has an established artifact location or they are needed to explain a failure.
+- Follow [artifact-management](../artifact-management/SKILL.md) for screenshots, traces, logs, and build outputs: reuse the established output location, bound capture size/duration, retain selected useful evidence, and clean up redundant task-created attempts after verification. Keep cited evidence stable.
 
 ## When Full Local Deployment Is Blocked
 

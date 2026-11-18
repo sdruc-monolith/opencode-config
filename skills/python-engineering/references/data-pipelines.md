@@ -18,6 +18,8 @@ Record the decisions relevant to the change:
 | Execution | Expected volume, skew, memory/storage limits, batch or incremental mode? |
 | Recovery | Retry identity, partial-output visibility, checkpoint timing, and rerun/backfill behavior? |
 
+For generated datasets, downloads, spill files, and retained runs, follow [artifact-management](../../artifact-management/SKILL.md): estimate peak storage and file count, use bounded pilots for unknown volumes, reuse valid inputs, and define retention and cleanup without removing recovery checkpoints or source data.
+
 Resolve ambiguous business policies rather than silently using engine defaults. Empty inputs must have deliberate behavior, including output schema where an empty dataset is expected.
 
 ## Preserve Grain and Cardinality

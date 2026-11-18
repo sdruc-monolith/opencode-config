@@ -1,0 +1,4 @@
+interface:
+  display_name: "Artifact Management"
+  short_description: "Keep files organized and storage use bounded"
+  default_prompt: "Use $artifact-management to keep this task's files and generated outputs organized, reuse existing artifacts, bound disk usage, and clean up task-owned temporary work."
